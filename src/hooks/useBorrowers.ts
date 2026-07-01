@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import borrowerService from '../lib/services/borrowerService';
-import { BorrowerSummary } from '../types';
-import { useAuth } from '../context/AuthContext';
+import borrowerService from '@/lib/services/borrowerService';
+import { BorrowerSummary } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export function useBorrowers() {
   const { user } = useAuth();
@@ -16,8 +16,8 @@ export function useBorrowers() {
       setError(null);
       const data = await borrowerService.getBorrowersByUserWithSummary(user.uid);
       setBorrowers(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch borrowers');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch borrowers');
     } finally {
       setLoading(false);
     }

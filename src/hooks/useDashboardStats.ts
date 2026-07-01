@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import trackingService from '../lib/services/trackingService';
-import { DashboardStats } from '../types';
-import { useAuth } from '../context/AuthContext';
+import trackingService from '@/lib/services/trackingService';
+import { DashboardStats } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export function useDashboardStats() {
   const { user } = useAuth();
@@ -16,8 +16,8 @@ export function useDashboardStats() {
       setError(null);
       const data = await trackingService.getDashboardStats(user.uid);
       setStats(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch dashboard stats');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch dashboard stats');
     } finally {
       setLoading(false);
     }

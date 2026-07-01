@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import trackingService from '../lib/services/trackingService';
-import { InstallmentTrackingItem } from '../types';
-import { useAuth } from '../context/AuthContext';
+import trackingService from '@/lib/services/trackingService';
+import { InstallmentTrackingItem } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export type InstallmentFilter = 'due-today' | 'overdue' | 'upcoming';
 
@@ -16,7 +16,7 @@ export function useInstallments(filter: InstallmentFilter) {
     try {
       setLoading(true);
       setError(null);
-      
+
       let data: InstallmentTrackingItem[] = [];
       if (filter === 'due-today') {
         data = await trackingService.getDueTodayInstallments(user.uid);
@@ -26,10 +26,10 @@ export function useInstallments(filter: InstallmentFilter) {
         const range = trackingService.getNextDaysRange(7);
         data = await trackingService.getUpcomingInstallments(user.uid, range);
       }
-      
+
       setInstallments(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch installments');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch installments');
     } finally {
       setLoading(false);
     }

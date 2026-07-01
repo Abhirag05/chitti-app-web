@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import loanService from '../lib/services/loanService';
-import { LoanDetailView } from '../types';
-import { useAuth } from '../context/AuthContext';
+import loanService from '@/lib/services/loanService';
+import { LoanDetailView } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export function useLoanDetail(loanId: string) {
   const { user } = useAuth();
@@ -16,8 +16,8 @@ export function useLoanDetail(loanId: string) {
       setError(null);
       const data = await loanService.getLoanDetail(user.uid, loanId);
       setDetail(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch loan details');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch loan details');
     } finally {
       setLoading(false);
     }
@@ -31,10 +31,8 @@ export function useLoanDetail(loanId: string) {
     if (!user) return;
     try {
       const refreshed = await loanService.markInstallmentAsPaid(user.uid, loanId, installmentId);
-      if (refreshed) {
-        setDetail(refreshed);
-      }
-    } catch (err: any) {
+      if (refreshed) setDetail(refreshed);
+    } catch (err) {
       console.error('Failed to mark paid:', err);
       throw err;
     }

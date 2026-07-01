@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useDashboardStats } from '../../hooks/useDashboardStats';
-import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
-import financialsService from '../../lib/services/financialsService';
-import { useAuth } from '../../context/AuthContext';
-import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
+import { useDashboardStats } from '@/hooks/useDashboardStats';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import financialsService from '@/lib/services/financialsService';
+import { useAuth } from '@/context/AuthContext';
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -35,7 +35,6 @@ export default function SettingsPage() {
       setIsUpdating(true);
       const value = confirmTarget === 'balance' ? Number(balanceInput) : Number(accumulatedInput);
       const field = confirmTarget === 'balance' ? 'currentBalance' : 'totalAccumulatedAmount';
-      
       await financialsService.setManualValue(user.uid, field, value);
       await refresh();
       setIsConfirmOpen(false);
@@ -51,18 +50,16 @@ export default function SettingsPage() {
   if (error) return <div className="text-rose-400 p-6">Error: {error}</div>;
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-2xl">
+    <div className="space-y-8 max-w-2xl">
       <div>
-        <h2 className="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
-          System Settings
-        </h2>
+        <h2 className="text-2xl font-bold text-white sm:text-3xl">System Settings</h2>
         <p className="mt-1 text-sm text-gray-400">Advanced controls for your financial system.</p>
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-        <h3 className="text-lg font-medium text-white">Manual Overrides</h3>
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <h3 className="text-lg font-medium text-white">Manual Balance Overrides</h3>
         <p className="mt-1 text-sm text-gray-400 mb-6">
-          Manually adjust the running balances. Only use this if you are injecting new capital or need to correct a discrepancy.
+          Only use this if you are injecting new capital or correcting a discrepancy.
         </p>
 
         <div className="space-y-6">
@@ -73,12 +70,12 @@ export default function SettingsPage() {
                 type="number"
                 value={balanceInput}
                 onChange={(e) => setBalanceInput(e.target.value)}
-                className="block w-full rounded-lg border border-white/10 bg-black/50 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="block w-full rounded-lg border border-white/10 bg-black/50 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
               />
               <button
                 onClick={() => handleOverride('balance')}
                 disabled={Number(balanceInput) === stats?.currentBalance}
-                className="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20 disabled:opacity-50"
+                className="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20 disabled:opacity-50 whitespace-nowrap"
               >
                 Update
               </button>
@@ -92,12 +89,12 @@ export default function SettingsPage() {
                 type="number"
                 value={accumulatedInput}
                 onChange={(e) => setAccumulatedInput(e.target.value)}
-                className="block w-full rounded-lg border border-white/10 bg-black/50 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="block w-full rounded-lg border border-white/10 bg-black/50 px-4 py-2 text-white focus:border-emerald-500 focus:outline-none"
               />
               <button
                 onClick={() => handleOverride('accumulated')}
                 disabled={Number(accumulatedInput) === stats?.totalAccumulatedAmount}
-                className="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20 disabled:opacity-50"
+                className="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20 disabled:opacity-50 whitespace-nowrap"
               >
                 Update
               </button>
