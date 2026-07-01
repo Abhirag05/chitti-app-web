@@ -2,6 +2,15 @@
    GLOBAL CSS — Chitti App Web
    ============================================================ */
 
+/* Tailwind CSS v4 — must be imported first */
+@import "tailwindcss";
+
+/* Tell Tailwind to scan these directories for class names */
+@source "../components";
+@source "../app";
+@source "../hooks";
+
+
 /* CSS Variables (Design Tokens) */
 /* --- Mentorship Note ---
    CSS variables (custom properties) are how we create a design system.

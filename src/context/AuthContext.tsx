@@ -14,6 +14,7 @@ interface AuthContextType {
   user: User | null;       // The Firebase user object. null means not logged in.
   loading: boolean;         // True while Firebase is checking the login state on app start.
   logout: () => Promise<void>; // A function to log the user out from anywhere in the app.
+  logOut: () => Promise<void>; // Alias for logout (for compatibility).
 }
 
 // Step 1: Create the context with a default value
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   logout: async () => {},
+  logOut: async () => {},
 });
 
 // Step 2: Create the Provider component
@@ -64,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, logout, logOut: logout }}>
       {children}
     </AuthContext.Provider>
   );
