@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import { auth } from "../../lib/firebase";
+import { auth } from "../lib/firebase";
 
 // --- Mentorship Note ---
 // A "Context" in React is a way to share data globally across your entire app

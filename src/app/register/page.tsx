@@ -9,7 +9,7 @@
 
 import { useState, FormEvent } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../lib/firebase";
+import { auth } from "../../lib/firebase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
